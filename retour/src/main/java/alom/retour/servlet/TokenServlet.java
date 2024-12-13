@@ -30,12 +30,13 @@ public class TokenServlet extends HttpServlet {
             String token = request.getParameter("token");
             String nickname = request.getParameter("nickname");
 
-            if (token == null || nickname == null) {
+            if (token == null || nickname == null || token.isEmpty() || nickname.isEmpty()) {
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                 response.getWriter().write("Missing token or nickname.");
                 return;
             }
-
+            token = token.trim();
+            nickname = nickname.trim();
             tokenStore.put(token, nickname);
             response.setStatus(HttpServletResponse.SC_OK);
             response.getWriter().write("Token et nickname registered successfully.");
@@ -49,12 +50,13 @@ public class TokenServlet extends HttpServlet {
         if ("/check".equals(path)) {
             String token = request.getParameter("token");
 
-            if (token == null) {
+            if (token == null || token.isEmpty()) {
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                 response.getWriter().write("Missing token.");
                 return;
             }
 
+            token = token.trim();
             String nickname = tokenStore.get(token);
             if (nickname != null) {
                 response.setStatus(HttpServletResponse.SC_OK);
