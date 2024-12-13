@@ -65,6 +65,12 @@
     <version>5.0.0</version> <!-- Use a version compatible with your Tomcat -->
     <scope>provided</scope>
 </dependency>
+
+   <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20210307</version>
+        </dependency>
     </dependencies>
     <properties>
         <jersey.version>3.1.9</jersey.version>

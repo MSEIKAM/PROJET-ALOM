@@ -47,4 +47,14 @@ public class UserService {
 	    }
 	    return null;
 	}
+	public void saveUserByToken(User user) {
+		database.saveToken(user);
+		
+	}
+	public User getUserByToken( String token) {
+		return database.getUserByToken(token);
+	}
+	public User getUserByNickname( String nickname) {
+		return database.getUserByNickname(nickname);
+	}
 }
