@@ -38,7 +38,7 @@ Le projet est divisé en plusieurs microservices, chacun étant un projet Java d
 
 ### Étape 2 : Créer un Compte
 
-Envoyez une requête POST à l'URL `http://localhost:8080/aller/register` avec le payload JSON suivant :
+Envoyez une requête POST à l'URL `http://localhost:8080/aller/webapi/register` avec le payload JSON suivant :
 
 ```json
 {
@@ -50,7 +50,7 @@ Envoyez une requête POST à l'URL `http://localhost:8080/aller/register` avec l
 
 ### Se Connecter
 
-Envoyez une requête POST à l'URL `http://localhost:8080/aller/login` avec le payload JSON suivant :
+Envoyez une requête POST à l'URL `http://localhost:8080/aller/webapi/login` avec le payload JSON suivant :
 
 ```json
 {
@@ -63,7 +63,7 @@ La réponse contiendra un token d'authentification.
 
 ### Envoyer un Message Privé
 
-Envoyez une requête POST à l'URL `http://localhost:8080/aller/send-message` avec le payload JSON suivant :
+Envoyez une requête POST à l'URL `http://localhost:8080/aller/webapi/send-message` avec le payload JSON suivant :
 
 ```json
 {
