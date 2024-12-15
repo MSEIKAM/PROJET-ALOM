@@ -29,10 +29,11 @@ Le projet est divisé en plusieurs microservices, chacun étant un projet Java d
 - Kafka
 - Un logiciel de test WebServices (Postman ou SOAP-UI)
 - Un logiciel client socket TCP (nc sous Linux ou Putty en mode Raw sous Windows)
-  **Problème connu** : java.lang.ClassNotFoundException: org.glassfish.jersey.servlet.ServletContainer
+  
+- **Problème connu** : java.lang.ClassNotFoundException: org.glassfish.jersey.servlet.ServletContainer
   Pour résoudre ce problème de configuration dans eclipse veuillez suivre ce lien :
   https://howtodoinjava.com/jersey/solved-java-lang-classnotfoundexception-org-glassfish-jersey-servlet-servletcontainer/
-
+  
 ## Installation et Utilisation
 
 ### Étape 2 : Créer un Compte
