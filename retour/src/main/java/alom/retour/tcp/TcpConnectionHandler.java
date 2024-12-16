@@ -30,9 +30,8 @@ public class TcpConnectionHandler implements Runnable {
     @Override
     public void run() {
         try (
-            BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-            PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true)
-        ) {
+                BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+                PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true)) {
             out.println("Enter your token (or type 'exit' to quit):");
 
             String token = in.readLine();
@@ -58,6 +57,9 @@ public class TcpConnectionHandler implements Runnable {
                 // Démarrer la consommation des messages Kafka dans un thread séparé
                 final String cleanedNickname = nickname; // Utiliser un alias final pour le thread
                 new Thread(() -> consumeKafkaMessages(cleanedNickname, out)).start();
+
+                // Appel pour démarrer la consommation des messages de channel
+                new Thread(() -> consumeChannelMessages("channel-name", out)).start();
 
                 // Lire les messages entrants si nécessaire
                 String message;
@@ -126,6 +128,33 @@ public class TcpConnectionHandler implements Runnable {
         } finally {
             consumer.close();
             System.out.println("Kafka consumer closed for " + nickname);
+        }
+    }
+
+    private void consumeChannelMessages(String channelName, PrintWriter out) {
+        Properties props = new Properties();
+        props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
+        props.put(ConsumerConfig.GROUP_ID_CONFIG, "channel-group");
+        props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
+        props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
+
+        KafkaConsumer<String, String> consumer = new KafkaConsumer<>(props);
+        consumer.subscribe(Collections.singletonList(channelName));
+
+        try {
+            while (!clientSocket.isClosed()) {
+                ConsumerRecords<String, String> records = consumer.poll(Duration.ofMillis(1000));
+                for (ConsumerRecord<String, String> record : records) {
+                    synchronized (out) {
+                        out.println("Message dans le channel " + channelName + ": " + record.value());
+                        out.flush();
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            consumer.close();
         }
     }
 }
